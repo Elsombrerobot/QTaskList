@@ -23,5 +23,4 @@ namespace TaskUtils
 	{
 		return m_data;
 	}
-
 }

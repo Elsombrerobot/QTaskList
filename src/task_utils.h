@@ -47,7 +47,6 @@ namespace TaskUtils
 		bool operator==(const TaskField& other) const {
 			return index == other.index;
 		}
-
 	};
 
 	// Fields to be used inside filter and view.
@@ -124,7 +123,6 @@ namespace TaskUtils
 	// Object wrapper around task data returned by the api.
 	class Task
 	{
-
 	public:
 		Task(QJsonObject taskData);
 
@@ -146,7 +144,6 @@ namespace TaskUtils
 
 	// A complete filter for every TaskField to be used by the proxy filter, to filter everything.
 	typedef QMap<TaskUtils::TaskField, FieldFilter> FilterMap;
-
 };
 
 #endif // TASK_LIST_UTILS_H
