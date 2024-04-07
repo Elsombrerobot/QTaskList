@@ -1,5 +1,5 @@
-#ifndef TASK_LIST_UTILS_H
-#define TASK_LIST_UTILS_H
+#ifndef TASK_UTILS_H
+#define TASK_UTILS_H
 
 #include<QObject>
 #include<QString>
@@ -146,4 +146,4 @@ namespace TaskUtils
 	typedef QMap<TaskUtils::TaskField, FieldFilter> FilterMap;
 };
 
-#endif // TASK_LIST_UTILS_H
+#endif // TASK_UTILS_H
