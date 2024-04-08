@@ -119,7 +119,7 @@ void TaskFieldFilter::SetFilterValues(TaskUtils::FieldFilter& fieldFilter)
 		m_filterValueList.append(tmp_checkbox);
 	}
 
-	// Reset filter to see all.
+	// Reset the filters te be all selected.
 	m_selectAll->setChecked(true);
 }
 
@@ -279,8 +279,10 @@ void TaskFilter::m_SetFilterMap(TaskUtils::FilterMap& fieldFilters)
 
 		// Set the new option values inside the TaskFieldFilter
 		fieldFilterWidget->SetFilterValues(filterValues);
-
 	}
+
+	// Filter are reset to all selected, set current filter with current value, and emit filter SelectedFiltersChanged.
+	m_SetCurrentFilter();
 }
 
 // Set the current filter, ie, filter selected by user.
@@ -293,7 +295,6 @@ void TaskFilter::m_SetCurrentFilter()
 	{
 		currentFilter[fieldFilterWidget->taskField] = *fieldFilterWidget->GetFilterValues();
 	}
-
 	// Emit new filter.
 	emit SelectedFiltersChanged(&currentFilter);
 }

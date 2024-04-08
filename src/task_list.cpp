@@ -169,6 +169,7 @@ bool TaskTableFilterProxy::m_checkCriterion(const QModelIndex& index, const Task
 // To update, just invalidate filter, as the pointer to the filter is already a member.
 void TaskTableFilterProxy::RefreshFilter()
 {
+    qDebug() << "called";
     invalidateFilter();
 }
 
