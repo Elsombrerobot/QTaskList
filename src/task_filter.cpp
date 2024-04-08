@@ -33,6 +33,7 @@ TaskFieldFilter::TaskFieldFilter(const TaskUtils::TaskField& taskField, QWidget*
 
 	// Label for field filter display
 	m_label = new QLabel(taskField.displayName, this);
+	m_label->setToolTip(taskField.tooltip);
 	QFont font = m_label->font();
 	font.setBold(true);
 	m_label->setFont(font);
