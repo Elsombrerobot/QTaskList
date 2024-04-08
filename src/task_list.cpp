@@ -6,6 +6,8 @@
 #include <QColor>
 #include <QTableView>
 #include <QHeaderView>
+#include <QApplication>
+#include <QStyleHints>
 
 #include "task_utils.h"
 #include "task_list.h"
@@ -95,14 +97,35 @@ QVariant TaskTableModel::data(const QModelIndex& index, int role) const
 // Get background color for given field from task. (Could implement a whole TaskStatus and TaskType system, since the api exposes the data)
 QColor TaskTableModel::GetBackgroundColor(const TaskUtils::Task& task, const TaskUtils::TaskField& field) const
 {
+    // Select color based on field   
+    QColor color;
+
     if (field == TaskUtils::Fields::TaskStatus)
     {
-        return QColor(task.Data().value("task_status_color").toString()).darker();
+        color = QColor(task.Data().value("task_status_color").toString());
     }
     else if (field == TaskUtils::Fields::TaskType)
     {
-        return QColor(task.Data().value("task_type_color").toString()).darker();
+        color = QColor(task.Data().value("task_type_color").toString());
     }
+    else
+    {
+        color = Qt::transparent;
+    }
+
+    // Modify color based on system theme settings
+     Qt::ColorScheme colorScheme = qApp->styleHints()->colorScheme();
+
+    if (colorScheme == Qt::ColorScheme::Dark)
+    {
+        return color.darker();
+    }
+
+    else if (colorScheme == Qt::ColorScheme::Light)
+    {
+        return color.lighter();
+    }
+
     return Qt::transparent;
 }
 
