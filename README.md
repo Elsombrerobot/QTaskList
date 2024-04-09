@@ -18,4 +18,7 @@ See [QTaskList-Exemple](https://github.com/Elsombrerobot/QTaskList-Exemple).
 - Code only tested with **VC 17**.
 
 # Use
-See [QTaskList-Exemple](https://github.com/Elsombrerobot/QTaskList-Exemple).
+`#include "task_list.h"`
+`#include "task_filter.h"`
+`#include "task_utils.h"`
+See [QTaskList-Exemple](https://github.com/Elsombrerobot/QTaskList-Exemple/blob/main/src/widgets/task_browser.cpp#L42) usage.
