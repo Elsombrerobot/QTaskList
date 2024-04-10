@@ -156,6 +156,7 @@ bool TaskTableFilterProxy::filterAcceptsRow(int sourceRow, const QModelIndex& so
         if (!index.isValid() || !m_checkCriterion(index, it.value()))
             return false;
     }
+
     return true;
 }
 
