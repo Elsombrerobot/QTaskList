@@ -4,6 +4,7 @@
 #include <QAbstractTableModel>
 #include <QVector>
 #include <Qt>
+#include <QMenu>
 #include <QColor>
 #include <QTableView>
 #include <QSortFilterProxyModel>
@@ -23,11 +24,11 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
     QColor GetBackgroundColor(const TaskUtils::Task& task, const TaskUtils::TaskField& field) const;
 
+    TaskUtils::TaskList* taskList;
+
 public slots:
     void RefreshModel();
 
-private:
-    TaskUtils::TaskList* m_taskList;
 };
 
 // --- Task Table Filter Proxy ---
@@ -56,7 +57,21 @@ class TaskTable : public QTableView
     Q_OBJECT
 
 public:
-    TaskTable(QWidget* parent = nullptr);
+    TaskTable(TaskUtils::TaskList* taskList, TaskUtils::FilterMap* filter, QWidget* parent = nullptr);
+    TaskTableModel* taskModel;
+    TaskTableFilterProxy* filterProxy;
+
+    TaskUtils::TaskConstRefList SelectedTasks();
+
+protected:
+    void contextMenuEvent(QContextMenuEvent* event) override;
+
+private:
+    const TaskUtils::Task& m_TaskAt(const QModelIndex& index);
+
+signals:
+    // onTask is the task which was under the cursor.
+    void TaskContextMenuRequested(const TaskUtils::Task& onTask, TaskUtils::TaskConstRefList selectedTasks, QContextMenuEvent* event);
 };
 
 #endif // TASK_LIST_H

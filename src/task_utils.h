@@ -125,12 +125,11 @@ namespace TaskUtils
 	{
 	public:
 		Task(QJsonObject taskData);
+		QString descriptiveName;
 
-		// Specific field getter.
 		QString Field(const TaskField& field) const;
-
-		// Data getter
 		const QJsonObject& Data() const;
+		QString GetRaw(QString name) const;
 
 	private:
 		QJsonObject m_data;
@@ -138,6 +137,7 @@ namespace TaskUtils
 
 	// Typedef for task stack 
 	typedef QList<Task> TaskList;
+	typedef QList<const Task*> TaskConstRefList;
 
 	// A list of values to be used with a TaskField to filter a the Task model with.
 	typedef QSet<QString> FieldFilter;

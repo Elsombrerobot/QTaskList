@@ -8,6 +8,11 @@
 #include <QHeaderView>
 #include <QApplication>
 #include <QStyleHints>
+#include <QMenu>
+#include <QIcon>
+#include <QContextMenuEvent>
+#include <QModelindex>
+#include <QList>
 
 #include "task_utils.h"
 #include "task_list.h"
@@ -15,12 +20,12 @@
 // --- Task Table Model ---
 // The model that will be used by a QTableView to get data for the correct roles and display.
 TaskTableModel::TaskTableModel(TaskUtils::TaskList* taskList, QObject* parent)
-    : QAbstractTableModel(parent), m_taskList(taskList) {}
+    : QAbstractTableModel(parent), taskList(taskList) {}
 
  // Return the number of available tasks.
 int TaskTableModel::rowCount(const QModelIndex& parent) const
 {
-    return m_taskList->size();
+    return taskList->size();
 }
 
 // Return the size of the TaskFieldMap, as this is where we define the fields available in the view and filter.
@@ -48,24 +53,23 @@ QVariant TaskTableModel::headerData(int section, Qt::Orientation orientation, in
     const TaskUtils::TaskField& field = TaskUtils::Fields::TaskFieldIndexMap.value(section);
 
     // Roles
-    // Display
-    if (role == Qt::DisplayRole)
+    switch (role)
     {
+    case Qt::DisplayRole:
         return field.displayName;
-    }
 
-    // Tooltip
-    if (role == Qt::ToolTipRole)
-    {
+    case Qt::ToolTipRole:
         return field.tooltip;
+
+    default:
+        return QVariant();
     }
-    return QVariant();
 }
 
 // Data reading for the table.
 QVariant TaskTableModel::data(const QModelIndex& index, int role) const
 {
-    if (!index.isValid() || !m_taskList)
+    if (!index.isValid() || !taskList)
     {
         return QVariant();
     }
@@ -74,7 +78,7 @@ QVariant TaskTableModel::data(const QModelIndex& index, int role) const
     quint8 row = index.row();        
     quint8 column = index.column(); 
 
-    const TaskUtils::Task& task = m_taskList->at(row);
+    const TaskUtils::Task& task = taskList->at(row);
     const TaskUtils::TaskField& field = TaskUtils::Fields::TaskFieldIndexMap.value(column);
 
     // Roles
@@ -104,10 +108,12 @@ QColor TaskTableModel::GetBackgroundColor(const TaskUtils::Task& task, const Tas
     {
         color = QColor(task.Data().value("task_status_color").toString());
     }
+
     else if (field == TaskUtils::Fields::TaskType)
     {
         color = QColor(task.Data().value("task_type_color").toString());
     }
+
     else
     {
         color = Qt::transparent;
@@ -174,8 +180,16 @@ void TaskTableFilterProxy::RefreshFilter()
 }
 
 // --- Task Table ---
-TaskTable::TaskTable(QWidget* parent): QTableView(parent)
+TaskTable::TaskTable(TaskUtils::TaskList* taskList, TaskUtils::FilterMap* filter, QWidget* parent)
+    : QTableView(parent)
 {
+    // Model and proxy filter model
+    taskModel = new TaskTableModel(taskList, this);
+    filterProxy = new TaskTableFilterProxy(filter, this);
+    filterProxy->setSourceModel(taskModel);
+    setModel(filterProxy);
+
+    // Gui setup
     setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     setHorizontalScrollMode(QAbstractItemView::ScrollPerPixel);
     setSelectionMode(QAbstractItemView::MultiSelection);
@@ -183,4 +197,50 @@ TaskTable::TaskTable(QWidget* parent): QTableView(parent)
     setSortingEnabled(true);
     sortByColumn(0, Qt::DescendingOrder);
     horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+}
+
+// return the list of currently selected tasks.
+TaskUtils::TaskConstRefList TaskTable::SelectedTasks()
+{
+    TaskUtils::TaskConstRefList taskList;
+
+    // Get all the tasks selected
+    QList<QModelIndex> selectedRows = selectionModel()->selectedRows();
+
+    for (qsizetype i = 0; i < selectedRows.size(); i++)
+    {
+        const QModelIndex& index = selectedRows.at(i);
+
+        const TaskUtils::Task& task = m_TaskAt(index);
+        taskList.append(&task);
+    }
+
+    return taskList;
+}
+
+// Get a Task object given an index in the table.
+const TaskUtils::Task& TaskTable::m_TaskAt(const QModelIndex& index)
+{
+    // Get the right index since we are using a proxy filter.
+    QModelIndex sourceIndex = filterProxy->mapToSource(index);
+
+    return taskModel->taskList->at(sourceIndex.row());
+}
+
+// Emit a custom signals that indicates task menu has been requested.
+void TaskTable::contextMenuEvent(QContextMenuEvent* event)
+{
+    const QModelIndex proxyIndex = indexAt(event->pos());
+
+    // Do not request menu if row under index is not selected. 
+    if (!selectionModel()->isSelected(proxyIndex))
+    {
+        return;
+    }
+  
+    // Get task through index
+    const TaskUtils::Task& task = m_TaskAt(proxyIndex);
+
+    // Emit requested context menu.
+    emit TaskContextMenuRequested(task, SelectedTasks(), event);
 }
