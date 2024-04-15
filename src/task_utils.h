@@ -86,8 +86,8 @@ namespace TaskUtils
 
 		const TaskField Name(
 			"entity_name",
-			"Name",
-			"Name of the task.",
+			"Entity",
+			"Name of the entity.",
 			4,
 			0
 		);
