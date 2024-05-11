@@ -30,6 +30,17 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     $<INSTALL_INTERFACE:include>
 )
 
+# Translations
+# Set translations sources.
+set(TS_SOURCE_fr_FR 
+	"${CMAKE_CURRENT_SOURCE_DIR}/resources/ts/${PROJECT_NAME}_fr_FR.ts"
+)
+
+# Set the directory where .qm files will be generated.
+set_source_files_properties(${TS_SOURCE_fr_FR}
+    PROPERTIES OUTPUT_LOCATION "${CMAKE_CURRENT_BINARY_DIR}/translations"
+)
+
 # --------- Qt6 ---------
 find_package(Qt6 COMPONENTS Widgets Core Gui REQUIRED)
 

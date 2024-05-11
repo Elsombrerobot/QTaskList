@@ -39,7 +39,7 @@ TaskFieldFilter::TaskFieldFilter(const TaskUtils::TaskField& taskField, QWidget*
 	m_label->setFont(font);
 
 	// Select all checkbox
-	m_selectAll = new QCheckBox("Select all", this);
+	m_selectAll = new QCheckBox(tr("Select all"), this);
 	m_selectAll->setChecked(true);
 	m_selectAll->setVisible(false);
 
@@ -176,8 +176,8 @@ TaskFilter::TaskFilter(QWidget* parent)
 
 	// Expand collpase buttons
 	m_buttonsLayout = new QHBoxLayout();
-	m_collapseButton = new QPushButton("Collapse", this);
-	m_expandButton = new QPushButton("Expand", this);
+	m_collapseButton = new QPushButton(tr("Collapse"), this);
+	m_expandButton = new QPushButton(tr("Expand"), this);
 	m_buttonsLayout->addWidget(m_collapseButton);
 	m_buttonsLayout->addWidget(m_expandButton);
 

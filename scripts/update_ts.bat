@@ -1,0 +1,8 @@
+@echo off
+
+set PRJ_PROJECT_NAME=QTaskList
+set PRJ_SOURCE_DIR=%~dp0..
+set PRJ_TRANSLATION_DIR=%PRJ_SOURCE_DIR%\resources\ts\
+set PRJ_SOURCE_TS_fr_FR=%PRJ_PROJECT_NAME%_fr_FR.ts
+
+lupdate %PRJ_SOURCE_DIR%\src -ts %PRJ_TRANSLATION_DIR%\%PRJ_SOURCE_TS_fr_FR%

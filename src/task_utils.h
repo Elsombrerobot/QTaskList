@@ -15,8 +15,8 @@ namespace TaskUtils
 		// Default constructor for QMap
 		TaskField()
 			: dataName("unkown"),
-			displayName("Unkown"),
-			tooltip("Unknown task field."),
+			displayName(QObject::tr("Unkown")),
+			tooltip(QObject::tr("Unknown task field.")),
 			index(7),
 			filterable(0) {}
 
@@ -54,56 +54,56 @@ namespace TaskUtils
 	{
 		const TaskField Project(
 			"project_name",
-			"Project",
-			"The production related to the task.",
+			QObject::tr("Project"),
+			QObject::tr("The production related to the task."),
 			0,
 			1
 		);
 
 		const TaskField Entity(
 			"entity_type_name",
-			"For",
-			"The entity type related to the task, Asset or Shot.",
+			QObject::tr("For"),
+			QObject::tr("The entity type related to the task, Asset or Shot."),
 			1,
 			1
 		);
 
 		const TaskField Episode(
 			"episode_name",
-			"Episode",
-			"The episode related to the task.",
+			QObject::tr("Episode"),
+			QObject::tr("The episode related to the task."),
 			2,
 			1
 		);
 
 		const TaskField Sequence(
 			"sequence_name",
-			"Sequence",
-			"The episode related to the task.",
+			QObject::tr("Sequence"),
+			QObject::tr("The episode related to the task."),
 			3,
 			1
 		);
 
 		const TaskField Name(
 			"entity_name",
-			"Entity",
-			"Name of the entity.",
+			QObject::tr("Entity"),
+			QObject::tr("Name of the entity."),
 			4,
 			0
 		);
 
 		const TaskField TaskType(
 			"task_type_name",
-			"Task type",
-			"The type of the task.",
+			QObject::tr("Task type"),
+			QObject::tr("The type of the task."),
 			5,
 			1
 		);
 
 		const TaskField TaskStatus(
 			"task_status_name",
-			"Task status",
-			"The status of the task.",
+			QObject::tr("Task status"),
+			QObject::tr("The status of the task."),
 			6,
 			1
 		);
@@ -139,7 +139,7 @@ namespace TaskUtils
 	typedef QList<Task> TaskList;
 	typedef QList<const Task*> TaskConstRefList;
 
-	// A list of values to be used with a TaskField to filter a the Task model with.
+	// A list of values to be used with a TaskField to filter the Task model with.
 	typedef QSet<QString> FieldFilter;
 
 	// A complete filter for every TaskField to be used by the proxy filter, to filter everything.

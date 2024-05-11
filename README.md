@@ -1,8 +1,8 @@
 # QTastList
-A set of Qt widgets used to filter and display tasks from a [Kitsu](https://www.cg-wire.com/fr/kitsu) instance.
+A set of Qt widgets used to filter and display tasks from a [Kitsu](https://www.cg-wire.com/fr/kitsu) instance user.
 
-# Screenshots and videos
-See [QTaskList-Exemple](https://github.com/Elsombrerobot/QTaskList-Exemple).
+# Screenshots
+See main project : [QTaskList-Exemple](https://github.com/Elsombrerobot/QTaskList-Exemple).
 
 # Requirements
 
@@ -15,7 +15,7 @@ See [QTaskList-Exemple](https://github.com/Elsombrerobot/QTaskList-Exemple).
 
 - Tested only for **windows 10 x64**.
 - Build tested only for **msvc community 2022**.
-- Code only tested with **VC 17**.
+- Code only tested with **C++17**.
 
 # Use
 `#include "task_list.h"`
